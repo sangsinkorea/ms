@@ -389,11 +389,45 @@ const DetailPlanner: React.FC<Props> = ({ apiKey, baseUrl }) => {
         );
     }
 
+    // AI Reasoning Messages Logic
+    const [planningMessage, setPlanningMessage] = useState("AI가 상품 정보를 심층 분석하고 있습니다...");
+
+    React.useEffect(() => {
+        if (step === 'PLANNING') {
+            const messages = [
+                "상품 특징과 타겟 고객층을 분석 중입니다...",
+                "경쟁사 데이터를 기반으로 차별화 전략을 도출합니다...",
+                "구매 전환율을 높일 설득 논리를 설계하고 있습니다...",
+                "매력적인 카피라이팅과 섹션 구조를 구성 중입니다...",
+                "최종 상세페이지 기획안을 생성하고 있습니다..."
+            ];
+            let msgIndex = 0;
+            const interval = setInterval(() => {
+                msgIndex = (msgIndex + 1) % messages.length;
+                setPlanningMessage(messages[msgIndex]);
+            }, 1800);
+            return () => clearInterval(interval);
+        }
+    }, [step]);
+
     if (step === 'PLANNING') {
         return (
-            <div className="flex flex-col items-center justify-center min-h-[500px]">
-                <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-yellow-500 mb-6"></div>
-                <h3 className="text-2xl font-bold text-white mb-2">AI 전략가가 기획중입니다</h3>
+            <div className="flex flex-col items-center justify-center min-h-[500px] animate-fade-in">
+                <div className="relative mb-8">
+                    <div className="animate-spin rounded-full h-20 w-20 border-b-4 border-yellow-500"></div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-2xl">🧠</span>
+                    </div>
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">AI 전략가가 기획 중입니다</h3>
+                <p className="text-neutral-400 text-lg font-medium animate-pulse text-center max-w-md break-keep">
+                    {planningMessage}
+                </p>
+                <div className="mt-8 flex gap-2">
+                    <div className="w-2 h-2 rounded-full bg-yellow-500 animate-bounce" style={{ animationDelay: '0s' }}></div>
+                    <div className="w-2 h-2 rounded-full bg-yellow-500 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-2 h-2 rounded-full bg-yellow-500 animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                </div>
             </div>
         )
     }
